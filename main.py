@@ -1,8 +1,14 @@
+#!/usr/bin/env python3
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
+from fastapi.responses import JSONResponse
 
-app = FastAPI()
+class Utf8JSONResponse(JSONResponse):
+    media_type = "application/json; charset=utf-8"
+
+app = FastAPI(default_response_class=Utf8JSONResponse)
 
 class Person(BaseModel):
     name: str
