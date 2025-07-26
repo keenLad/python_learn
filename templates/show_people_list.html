@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>show peoples</title>
+</head>
+<body>
+<h1>Усі люди</h1>
+<a href="people/add">Додати</a>
+    <table style="border:1px">
+        <tr>
+            <th>ID</th>
+            <th>Ім’я</th>
+            <th>Вік</th>
+            <th>Місто</th>
+        </tr>
+        {% for person in people %}
+        <tr>
+            <td>{{ person.id }}</td>
+            <td>{{ person.name }}</td>
+            <td>{{ person.age }}</td>
+            <td>{{ person.city }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
