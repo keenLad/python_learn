@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List, Optional
 from fastapi.templating import Jinja2Templates
-from starlette.requests import Request
 
 
 from database import SessionLocal, engine
@@ -40,7 +39,7 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def home(request: Request, db: Session = Depends(get_db)):
     people = db.query(PersonModel).all()
     return templates.TemplateResponse("show_people_list.html", {
@@ -48,7 +47,9 @@ def home(request: Request, db: Session = Depends(get_db)):
         "people": people
     })
 
-@app.get("/add", response_class=HTMLResponse)
+@app.get("/add", response_class=HTMLResponse
+    , summary="add person form"
+    , description="show form for add person")
 def show_add_form(request: Request):
     return templates.TemplateResponse("add_person_form.html", {"request": request})
 
@@ -64,7 +65,7 @@ def handle_form(
     db.commit()
     return RedirectResponse(url="/", status_code=303)
 
-@app.post("/people", response_model=PersonOut)
+@app.post("/people", tags=["List"], response_model=PersonOut)
 def add_person(person: PersonIn, db: Session = Depends(get_db)):
     db_person = PersonModel(**person.dict())
     db.add(db_person)
@@ -72,18 +73,18 @@ def add_person(person: PersonIn, db: Session = Depends(get_db)):
     db.refresh(db_person)
     return db_person
 
-@app.get("/people", response_model=List[PersonOut])
+@app.get("/people", tags=["List"], response_model=List[PersonOut])
 def list_people(db: Session = Depends(get_db)):
     return db.query(PersonModel).all()
 
-@app.get("/people/{person_id}", response_model=PersonOut)
+@app.get("/people/{person_id}", tags=["Entry"], response_model=PersonOut)
 def get_person(person_id: int, db: Session = Depends(get_db)):
     person = db.query(PersonModel).get(person_id)
     if not person:
         raise HTTPException(status_code=404, detail="Person not found")
     return person
 
-@app.put("/people/{person_id}", response_model=PersonOut)
+@app.put("/people/{person_id}", tags=["Entry"], response_model=PersonOut)
 def update_person(person_id: int, updated: PersonUpdate, db: Session = Depends(get_db)):
     person = db.query(PersonModel).get(person_id)
     if not person:
@@ -96,7 +97,7 @@ def update_person(person_id: int, updated: PersonUpdate, db: Session = Depends(g
     db.refresh(person)
     return person
 
-@app.delete("/people/{person_id}")
+@app.delete("/people/{person_id}", tags=["Entry"])
 def delete_person(person_id: int, db: Session = Depends(get_db)):
     person = db.query(PersonModel).get(person_id)
     if not person:
