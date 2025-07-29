@@ -21,6 +21,7 @@ def test_update_person(db):
     updated = manager.update(person.id, PersonUpdate(age=26))
     assert updated.age == 26
     assert updated.name == "Bob"  # інші поля не змінюються
+    assert updated.city == "Lviv"
 
 def test_delete_person(db):
     manager = PersonManager(db)
