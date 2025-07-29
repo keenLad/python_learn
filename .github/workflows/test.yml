@@ -4,15 +4,15 @@ name: Run tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
   workflow_dispatch:
     inputs:
       environment:
         description: 'Deployment Environment'
         required: true
-        default: 'staging'
+        default: 'development'
         type: choice
         options:
           - 'development'
