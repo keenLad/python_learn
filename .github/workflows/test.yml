@@ -49,4 +49,4 @@ jobs:
           PYTHONPATH: .
         run: |
           source venv/bin/activate
-          pytest -q --tb=short
+          python -m pytest -v --tb=short
