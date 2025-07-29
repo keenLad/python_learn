@@ -7,22 +7,6 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment Environment'
-        required: true
-        default: 'development'
-        type: choice
-        options:
-          - 'development'
-          - 'staging'
-          - 'production'
-      debug_mode:
-        description: 'Enable Debugging'
-        required: false
-        default: false
-        type: boolean
 
 jobs:
   test:
