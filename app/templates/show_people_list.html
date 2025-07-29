@@ -16,7 +16,7 @@
         </tr>
         {% for person in people %}
         <tr>
-            <td>{{ person.id }}</td>
+            <td><a href="/edit/{{ person.id }}">{{ person.id }}</a></td>
             <td>{{ person.name }}</td>
             <td>{{ person.age }}</td>
             <td>{{ person.city }}</td>

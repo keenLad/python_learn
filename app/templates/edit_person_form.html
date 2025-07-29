@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Редагувати особу</title>
+</head>
+<body>
+    <h1>Редагувати особу</h1>
+    <form id="editForm">
+        <label>Ім’я: <input type="text" id="name"></label><br>
+        <label>Вік: <input type="number" id="age"></label><br>
+        <label>Місто: <input type="text" id="city"></label><br>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <script>
+        const personId = {{ person_id }};
+        const apiUrl = `/people/${personId}`;
+
+        // Отримати поточні дані
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("name").value = data.name;
+                document.getElementById("age").value = data.age;
+                document.getElementById("city").value = data.city;
+            });
+
+        // Обробник форми
+        document.getElementById("editForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const updatedData = {
+                name: document.getElementById("name").value,
+                age: parseInt(document.getElementById("age").value),
+                city: document.getElementById("city").value
+            };
+
+            const response = await fetch(apiUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (response.ok) {
+                alert("Дані оновлено!");
+                window.location.href = "/"; // або куди хочеш
+            } else {
+                alert("Помилка оновлення");
+            }
+        });
+    </script>
+</body>
+</html>

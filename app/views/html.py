@@ -35,3 +35,7 @@ def handle_form(
     db.add(person)
     db.commit()
     return RedirectResponse(url="/", status_code=303)
+
+@router.get("/edit/{person_id}", response_class=HTMLResponse)
+def edit_person_page(request: Request, person_id: int):
+    return templates.TemplateResponse("edit_person_form.html", {"request": request, "person_id": person_id})

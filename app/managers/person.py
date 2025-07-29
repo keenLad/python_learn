@@ -9,10 +9,10 @@ class PersonManager:
         return self.db.query(Person).all()
 
     def get(self, person_id: int):
-        return self.db.query(Person).get(person_id)
+        return self.db.get(Person, person_id)
 
     def create(self, data: PersonIn):
-        person = Person(**data.dict())
+        person = Person(**data.model_dump())
         self.db.add(person)
         self.db.commit()
         self.db.refresh(person)

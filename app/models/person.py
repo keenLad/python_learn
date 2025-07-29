@@ -25,5 +25,5 @@ class PersonUpdate(BaseModel):
 class PersonOut(PersonIn):
     id: int
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True

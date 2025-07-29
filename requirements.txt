@@ -15,3 +15,4 @@ pydantic_core~=2.33.2
 anyio~=4.9.0
 click~=8.2.1
 annotated-types~=0.7.0
+pytest
